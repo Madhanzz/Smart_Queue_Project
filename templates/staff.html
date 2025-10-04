@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+
+    <title>Staff Dashboard</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Staff Dashboard</h1>
+
+    <h2>Currently Serving:</h2>
+    <p id="serving">Loading...</p>
+
+    <form action="{{ url_for('call_next') }}" method="get">
+        <button type="submit">Call Next Token</button>
+    </form>
+
+    <h2>Waiting Tokens:</h2>
+    <ul id="waiting">
+        <li>Loading...</li>
+    </ul>
+
+<script type="text/javascript">
+    var waitingList = document.getElementById("waiting");
+    var servingElem = document.getElementById("serving");
+
+    var socket = io();
+
+    // Initial state when staff connects
+    socket.on('current_state', function(data) {
+        // Populate waiting tokens
+        waitingList.innerHTML = "";
+        data.waiting.forEach(function(num) {
+            const li = document.createElement("li");
+            li.textContent = "Token " + num;
+            waitingList.appendChild(li);
+        });
+
+        // Show currently serving token
+        if (data.serving !== null) {
+            servingElem.innerText = "Token " + data.serving;
+        } else {
+            servingElem.innerText = "No token is being served.";
+        }
+    });
+
+    // Update when a new token is called
+    socket.on('token_called', function(data) {
+        servingElem.innerText = "Token " + data.number;
+
+        // Remove from waiting list
+        const items = waitingList.getElementsByTagName("li");
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].textContent === "Token " + data.number) {
+                waitingList.removeChild(items[i]);
+                break;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

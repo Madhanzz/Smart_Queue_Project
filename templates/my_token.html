@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>My Token</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>My Token</h1>
+    <p>Token Number: <span id="token_number">{{ token_number }}</span></p>
+    <p>Status: <span id="status">{{ status }}</span></p>
+    <p>Tokens ahead: <span id="tokens_ahead">{{ tokens_ahead }}</span></p>
+    <p>Estimated Wait Time: <span id="est_wait">{{ est_wait_time }}</span> minutes</p>
+
+    <script>
+        // Backend rendered variables as JSON to ensure correct JS syntax
+        var tokenNumber = JSON.parse('{{ token_number | tojson | safe }}');
+    var tokensAhead = JSON.parse('{{ tokens_ahead | tojson | safe }}');
+    var estWait = JSON.parse('{{ est_wait_time | tojson | safe }}');
+
+        var statusElem = document.getElementById("status");
+        var tokensAheadElem = document.getElementById("tokens_ahead");
+        var estWaitElem = document.getElementById("est_wait");
+
+        var avgServiceTime = 5; // should match backend
+
+        var socket = io();
+
+        // Real-time updates
+        socket.on('token_called', function(data) {
+            if (data.number === tokenNumber) {
+                statusElem.innerText = "CALLED - Please proceed!";
+                tokensAheadElem.innerText = 0;
+                estWaitElem.innerText = 0;
+                alert("Your token " + tokenNumber + " is called! Please proceed."); 
+            } else if (data.number < tokenNumber) {
+                tokensAhead = tokensAhead - 1;
+                tokensAheadElem.innerText = tokensAhead;
+                estWaitElem.innerText = tokensAhead * avgServiceTime;
+            }
+        });
+
+        socket.on('token_served', function(data) {
+            if (data.number === tokenNumber) {
+                statusElem.innerText = "Served. Thank you!";
+                tokensAheadElem.innerText = 0;
+                estWaitElem.innerText = 0;
+                alert("Your token " + tokenNumber + " is served. Thank you!");
+            }
+        });
+    </script>
+</body>
+</html>

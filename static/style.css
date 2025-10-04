@@ -1,0 +1,179 @@
+/* General resets and smooth font rendering */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7f9fc;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Headings */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a73e8;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.75rem;
+    margin: 1.5rem 0 1rem;
+    color: #2e3a59;
+}
+
+/* Buttons */
+button {
+    background: #1a73e8;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.8rem;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(26, 115, 232, 0.4);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    user-select: none;
+    display: inline-block;
+    margin: 1rem auto;
+}
+
+button:hover,
+button:focus {
+    background: #1663c7;
+    outline: none;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22, 99, 199, 0.6);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(22, 99, 199, 0.5);
+}
+
+/* Links wrapping buttons styling */
+a {
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    max-width: 200px;
+}
+
+/* Token Number and info styling */
+p {
+    font-size: 1.125rem;
+    margin-bottom: 0.6rem;
+    color: #444;
+    text-align: center;
+}
+
+p span {
+    font-weight: 700;
+    color: #1a73e8;
+}
+
+/* Alerts and status text */
+#status {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2e7d32; /* green for active */
+    margin: 1rem 0;
+    text-align: center;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding-left: 0;
+    max-width: 300px;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+}
+
+ul li {
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    color: #555;
+    transition: background-color 0.3s ease;
+}
+
+ul li:hover {
+    background: #e3f2fd;
+}
+
+/* Current serving display */
+#serving {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a73e8;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* QR code image */
+img[alt="QR Code"] {
+    display: block;
+    margin: 1rem auto;
+    max-width: 90%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive typography and layout */
+@media (max-width: 600px) {
+    html {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    button {
+        max-width: 90%;
+        padding: 0.7rem 1.4rem;
+        font-size: 1rem;
+    }
+
+    ul {
+        max-width: 90%;
+    }
+}
+
+/* Add subtle fade-in animation */
+body > * {
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
